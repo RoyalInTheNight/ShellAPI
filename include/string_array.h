@@ -53,12 +53,23 @@ public:
     }
 
     inline base_string& operator+=(base_string& str) {
-        this->arr_ptr = alloc.add_memory(this->arr_ptr, this->size_arr_ptr, (this->size_arr_ptr + str.size()));
-        
-        for (u32 i = 0; i < str.size(); i++)
-            this->arr_ptr[i + this->size_arr_ptr] = str[i];
+        if (!this->size()) {
+            this->size_arr_ptr += str.size();
 
-        this->size_arr_ptr += str.size();
+            this->arr_ptr = alloc.allocator(this->size());
+
+            for (u32 i = 0; i < str.size(); i++)
+                this->arr_ptr[i] = str[i];
+        }
+
+        else {
+            this->arr_ptr = alloc.add_memory(this->arr_ptr, this->size_arr_ptr, (this->size_arr_ptr + str.size()));
+        
+            for (u32 i = 0; i < str.size(); i++)
+                this->arr_ptr[i + this->size_arr_ptr] = str[i];
+
+            this->size_arr_ptr += str.size();
+        }
 
         return *this;
     }
@@ -66,12 +77,22 @@ public:
     inline base_string& operator+=(smt str) {
         u32 size_str = strlen(str);
 
-        this->arr_ptr = alloc.add_memory(this->arr_ptr, this->size_arr_ptr, (this->size_arr_ptr + size_str));
+        if (!this->size()) {
+            this->arr_ptr = alloc.allocator(size_str);
+            this->size_arr_ptr += size_str;
 
-        for (u32 i = 0; i < size_str; i++)
-            this->arr_ptr[i + this->size_arr_ptr] = str[i];
+            for (u32 i = 0; i < this->size(); i++)
+                this->arr_ptr[i] = str[i];
+        }
 
-        this->size_arr_ptr += size_str;
+        else {
+            this->arr_ptr = alloc.add_memory(this->arr_ptr, this->size_arr_ptr, (this->size_arr_ptr + size_str));
+
+            for (u32 i = 0; i < size_str; i++)
+                this->arr_ptr[i + this->size_arr_ptr] = str[i];
+
+            this->size_arr_ptr += size_str;
+        }
 
         return *this;
     }
