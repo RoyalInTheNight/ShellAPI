@@ -37,6 +37,10 @@ namespace core {
             const static core::types::s32 recv_error     = -(5);
             const static core::types::s32 ok             =  (0);
         }
+
+        namespace liburing_errors {
+            const static core::types::s32 io_queue_error = -(6);
+        }
     }
 
     namespace filesystem {
