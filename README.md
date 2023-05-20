@@ -3,7 +3,7 @@
 `to develop`
 
 
-## bugs
+## bugs (solved)
 linking error when building the network part of the application:
 ```
 /usr/bin/ld: ./libssnet.a(ssnet.o): in function `Socket::_sendfile(int, std::filesystem::__cxx11::path, int)':
